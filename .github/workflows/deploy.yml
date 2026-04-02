@@ -1,0 +1,56 @@
+name: Build and Deploy Image to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Trigger on pushes to main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # Required for pushing to another branch
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run Python script
+      run: |
+        python script_weather_dashboard.py  # Replace with your script name
+
+    - name: Configure Git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Push generated image to gh-pages
+      run: |
+        # Create gh-pages branch if it doesn't exist
+        if ! git show-ref --verify --quiet refs/heads/gh-pages; then
+          git checkout --orphan gh-pages
+          git rm -rf .
+          git commit --allow-empty -m "Initial commit on gh-pages"
+          git push origin gh-pages
+        fi
+
+        # Switch to gh-pages branch
+        git checkout gh-pages
+
+        # Copy the generated image
+        cp ../weather_dashboard.png ./  # Replace with the actual output file
+
+        # Commit and push
+        git add weather_dashboard.png
+        git commit -m "Update image from main branch" || echo "No changes to commit"
+        git push origin gh-pages --force
