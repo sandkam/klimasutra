@@ -8,6 +8,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents : write
 
     steps:
     - name: Checkout repository
@@ -36,6 +38,9 @@ jobs:
 
     - name: Push generated image to gh-pages
       run: |
+        # Save generated image before switching branches
+        cp weather_dashboard.png /tmp/weather_dashboard.png
+
         # Create gh-pages branch if it doesn't exist
         if ! git show-ref --verify --quiet refs/heads/gh-pages; then
           git checkout --orphan gh-pages
@@ -47,8 +52,8 @@ jobs:
         # Switch to gh-pages branch
         git checkout gh-pages
 
-        # Copy the generated image
-        cp ../weather_dashboard.png ./  # Replace with the actual output file
+        # Restore the generated image
+        cp /tmp/weather_dashboard.png ./weather_dashboard.png
 
         # Commit and push
         git add weather_dashboard.png
