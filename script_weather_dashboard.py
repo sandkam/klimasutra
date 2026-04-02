@@ -119,8 +119,11 @@ ax_loc.text(0.5, 0.3, f"{current_temp:.1f} °C", ha='center', va='center', fonts
 
 # Weather icon + title
 ax_icon = fig.add_subplot(gs_top[1])
-img = mpimg.imread(icon_path)
-ax_icon.imshow(img)
+try:
+    img = mpimg.imread(icon_path)
+    ax_icon.imshow(img)
+except (FileNotFoundError, OSError):
+    ax_icon.text(0.5, 0.5, current_weather, ha='center', va='center', fontsize=14, wrap=True)
 ax_icon.set_title(current_weather, fontsize=14)
 ax_icon.axis('off')
 
