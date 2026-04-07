@@ -1,0 +1,43 @@
+name: Deploy Python Script
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: true  # Needed to push back to repo
+
+      # Step 2: Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: pip install --upgrade pip && pip install -r requirements.txt
+
+      # Step 4: Run the Python script
+      - name: Run script
+        run: python script_weather_dashboard.py  # replace with your script name
+
+      # Step 5: Commit and push generated image if changed
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add weather_dashboard.png
+          git diff-index --quiet HEAD || git commit -m "Update generated weather_dashboard.png"
+          git push
