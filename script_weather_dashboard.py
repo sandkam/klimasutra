@@ -4,12 +4,14 @@ import matplotlib.image as mpimg
 import numpy as np
 #import geocoder
 import math
+import pytz
 
 from datetime import datetime
 from astral.sun import sun
 from astral import Observer
 from datetime import date
 from timezonefinder import TimezoneFinder
+from zoneinfo import ZoneInfo
 from matplotlib.patches import Wedge
 
 
@@ -41,7 +43,7 @@ sunset_M = s['sunset'].minute
 # -----------------------------------
 
 # --- 2) Fetch data ---
-url = f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&hourly=temperature_2m,precipitation,winddirection_10m,windspeed_10m,weathercode&timezone={tz}"
+url = f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&hourly=temperature_2m,precipitation,winddirection_10m,windspeed_10m,weathercode&timezone=Europe/Berlin"
 data = requests.get(url).json()
 
 times = data["hourly"]["time"]
@@ -52,7 +54,12 @@ wind_speeds = data["hourly"]["windspeed_10m"]
 weather_codes = data["hourly"]["weathercode"]
 
 # --- 3) Today selection ---
-now = datetime.now()
+timezone = pytz.timezone(tz)
+local_time = datetime.now(timezone)
+print(local_time)
+
+#now = datetime.now()
+now = datetime.now(ZoneInfo(tz))
 today_str = now.strftime("%Y-%m-%d")
 indices = [i for i, t in enumerate(times) if t.startswith(today_str)]
 
