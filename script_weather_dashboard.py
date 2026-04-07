@@ -202,4 +202,5 @@ ax1.fill_between(x, ymin, y, color='red', alpha=0.8)
 plt.tight_layout()
 plt.savefig('weather_dashboard.png')
 
+
 #plt.show()
