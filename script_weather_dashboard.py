@@ -2,7 +2,7 @@ import requests
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import numpy as np
-import geocoder
+#import geocoder
 import math
 
 from datetime import datetime
@@ -14,13 +14,13 @@ from matplotlib.patches import Wedge
 
 
 # Get location based on your public IP
-g = geocoder.ip('me')
+#g = geocoder.ip('me')
 
 # --- 1) Location ---
-latitude  = g.latlng[0]     #51.0344
-longitude = g.latlng[1]     #7.0196
-city      = g.city
-country   = g.country
+latitude  = 50.9375 #g.latlng[0]     #51.0344
+longitude = 6.9603  #g.latlng[1]     #7.0196
+city      = Köln    #g.city
+country   = DE      #g.country
 
 # --- Get timezone from lat/lon ---
 tf = TimezoneFinder()
