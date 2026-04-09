@@ -1,9 +1,16 @@
-name: Deploy Python Script
+name: Weather Dashboard Deployment
 
 on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'weather_dashboard.png'
+
+  schedule:
+    - cron: "*/15 * * * *"   # every 15 minutes (UTC)
+
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -13,31 +20,46 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repository
+      # 1. Checkout repository
       - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          persist-credentials: true  # Needed to push back to repo
+        uses: actions/checkout@v4
 
-      # Step 2: Set up Python
+      # 2. Set up Python
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
-      # Step 3: Install dependencies
+      # 3. Cache pip dependencies
+      - name: Cache pip
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+
+      # 4. Install dependencies
       - name: Install dependencies
-        run: pip install --upgrade pip && pip install -r requirements.txt
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
 
-      # Step 4: Run the Python script
-      - name: Run script
-        run: python script_weather_dashboard.py  # replace with your script name
+      # 5. Run your script
+      - name: Run weather dashboard script
+        run: python script_weather_dashboard.py
 
-      # Step 5: Commit and push generated image if changed
+      # 6. Commit & push only if file exists and changed
       - name: Commit and push changes
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add weather_dashboard.png
-          git diff-index --quiet HEAD || git commit -m "Update generated weather_dashboard.png"
-          git push
+
+          if [ -f weather_dashboard.png ]; then
+            git add weather_dashboard.png
+
+            # Commit only if there are changes
+            git diff-index --quiet HEAD || git commit -m "Auto-update weather dashboard"
+
+            git push
+          else
+            echo "weather_dashboard.png not found, skipping commit"
+          fi
