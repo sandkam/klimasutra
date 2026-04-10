@@ -56,7 +56,7 @@ weather_codes = data["hourly"]["weathercode"]
 # --- 3) Today selection ---
 timezone = pytz.timezone(tz)
 local_time = datetime.now(timezone)
-print(local_time)
+#print(local_time)
 
 #now = datetime.now()
 now = datetime.now(ZoneInfo(tz))
