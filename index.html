@@ -36,10 +36,28 @@
 </head>
 
 <body>
-    <h1>Klimasutra</h1>
-    <img src="weather_dashboard.png" alt="Klimasutra Image">
-    <div>
-        <!-- Existing content -->
+    <div class="sidebar">
+        <h1>Klimasutra</h1>
+        <div class="nav">
+            <button onclick="showTab('weather')">Weather</button>
+            <button onclick="showTab('climate')">Climate</button>
+        </div>
     </div>
+
+    <div class="content">
+        <div id="weather" class="tab active">
+            <img src="weather_dashboard.png" alt="Weather Dashboard">
+        </div>
+
+        <div id="climate" class="tab">
+            <p>Climate content goes here</p>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+        }
+    </script>
 </body>
-</html>
