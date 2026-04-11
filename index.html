@@ -70,21 +70,31 @@
 
 <body>
     <div class="sidebar">
-        <h1>Klimasutra</h1>
-        <div class="nav">
-            <button onclick="showTab('weather')">Weather</button>
-            <button onclick="showTab('climate')">Climate</button>
-        </div>
+    	<h1>Klimasutra</h1>
+    	<div class="nav">
+        	<button onclick="showTab('home')">Home</button>
+        	<button onclick="showTab('weather')">Weather</button>
+        	<button onclick="showTab('climate')">Climate</button>
+    	</div>
     </div>
 
     <div class="content">
-        <div id="weather" class="tab active">
-            <img src="weather_dashboard.png" alt="Weather Dashboard">
-        </div>
 
-        <div id="climate" class="tab">
-            <p>Climate content goes here</p>
-        </div>
+    	<!-- DEFAULT IMAGE -->
+    	<div id="home" class="tab active">
+        	<img src="default.png" alt="Default View">
+    	</div>
+
+    	<!-- WEATHER -->
+    	<div id="weather" class="tab">
+        	<img src="weather_dashboard.png" alt="Weather Dashboard">
+    	</div>
+
+    	<!-- CLIMATE -->
+    	<div id="climate" class="tab">
+        	<p>Climate content goes here</p>
+    	</div>
+
     </div>
 
     <script>
