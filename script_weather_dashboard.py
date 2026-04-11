@@ -145,8 +145,8 @@ labels = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']
 ax_wind.set_thetagrids(angles, labels)
 # ----------------------
 ax_wind.set_title(f"Wind: {wind_s_current} kph", fontsize=12)
-ax_wind.annotate('', xy=(angle_rad, 1), xytext=(0,0),
-                 arrowprops=dict(facecolor='red', width=3, headwidth=10))
+ax_wind.annotate('', xy=(angle_rad, 1), xytext=(angle_rad + np.pi, 1),
+                 arrowprops=dict(facecolor='red', width=3, headwidth=12))
 
 # --- Bottom half: temp + precipitation ---
 ax1 = fig.add_subplot(gs[1])
