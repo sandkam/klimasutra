@@ -7,8 +7,8 @@ on:
     paths-ignore:
       - 'weather_dashboard.png'
 
-  schedule:
-    - cron: "*/15 * * * *"   # every 15 minutes (UTC)
+        #schedule:
+        #- cron: "*/15 * * * *"   # every 15 minutes (UTC)
 
   workflow_dispatch:
 
